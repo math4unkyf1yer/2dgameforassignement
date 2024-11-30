@@ -34,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
     public GameObject losePage;
     public TextMeshProUGUI myText;
     public GameObject extraCamera;
+    public AudioSource playerSound;
+
+    //coins 
+    public int cointotal; /// here 
 
     void Launch()
     {
@@ -44,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void TookDamage(int damage)
     {
+        playerSound.Play();
         currentHealth -= damage;
         tookDamageEffect.SetActive(true);
         StartCoroutine(resetDamageEffect());
@@ -130,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
        
         if (amount < 0)
         {
+            playerSound.Play();
             tookDamageEffect.SetActive(true);
             StartCoroutine(resetDamageEffect());
             if (isInvincible)
