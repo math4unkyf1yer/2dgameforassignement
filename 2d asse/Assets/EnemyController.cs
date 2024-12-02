@@ -76,6 +76,8 @@ public class EnemyController : MonoBehaviour
         health -= damage;
         if(health <= 0)
         {
+            PlayerMovement playerScript = GameObject.Find("PlayerCharacter").GetComponent<PlayerMovement>();
+            playerScript.cointotal += 10;
             Destroy(gameObject);
         }
     }

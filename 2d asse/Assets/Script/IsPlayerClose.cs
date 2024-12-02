@@ -6,8 +6,8 @@ using TMPro;
 
 public class IsPlayerClose : MonoBehaviour
 {
-    public Transform player; // Reference to the player's Transform
-    public float detectionRange = 3f; // Distance within which the action will trigger
+    public Transform player; // player location
+    public float detectionRange = 3f; // trigger range
     public Animator RepairAnimation;
     public GameObject robotEffect;
     public TextMeshProUGUI myText;
@@ -18,22 +18,34 @@ public class IsPlayerClose : MonoBehaviour
     {
         if(player != null)
         {
-            // Calculate the distance between the player and this object
+            // calculate distance between player and enemy
             float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-            // Check if the player is within the detection range
+            // detect player in range
             if (distanceToPlayer <= detectionRange)
             {
-                // Call a function to trigger the event or action
-                myText.text = "Pressed R to repair";
+                // show prompt
+                myText.text = "Press R To Repair";
+
                 if (Input.GetKeyDown(KeyCode.R) && !alreadyPressed)
                 {
                     alreadyPressed = true;
                     playerScript.robotRepair++;
-                    //change animation 
+                    // change animation
                     RepairAnimation.SetBool("Repair", true);
-                    //take off effect
+                    // close effect
                     robotEffect.SetActive(false);
+
+                    // play audio
+                    AudioClip repairSound = Resources.Load<AudioClip>("Repair");
+                    if (repairSound != null)
+                    {
+                        AudioSource.PlayClipAtPoint(repairSound, transform.position);
+                    }
+                    else
+                    {
+                        Debug.LogError("not found Resources  'Repair' 。");
+                    }
                 }
 
             }
@@ -43,6 +55,4 @@ public class IsPlayerClose : MonoBehaviour
             }
         }
     }
-
-    // This function is called when the player is close enough
 }

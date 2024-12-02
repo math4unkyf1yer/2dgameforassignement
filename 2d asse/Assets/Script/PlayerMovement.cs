@@ -22,9 +22,8 @@ public class PlayerMovement : MonoBehaviour
     bool isInvincible;
     float damageCooldown;
 
-    // Reference to the health slider
-    public Slider healthSlider;
-
+    public TextMeshProUGUI healthtext;
+    public TextMeshProUGUI coinText;
     // Variables related to animation
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
@@ -59,11 +58,9 @@ public class PlayerMovement : MonoBehaviour
         isInvincible = true;
         damageCooldown = timeInvincible;
         animator.SetTrigger("Hit");
-        // Update the slider value
-        if (healthSlider != null)
-        {
-            healthSlider.value = currentHealth;
-        }
+        // Update the text value
+        healthtext.text = currentHealth + "/5";
+
         if (currentHealth <= 0)
         {
             extraCamera.SetActive(true);
@@ -80,17 +77,13 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
-        // Initialize the slider
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
-        }
+        healthtext.text = currentHealth + "/5";
         animator.SetTrigger("Hit");
     }
 
     void Update()
     {
+        coinText.text = "coin:" + cointotal;
         myText.text = "Repair all Robots" + robotRepair + "/3";
         if(robotRepair == 3)
         {
@@ -157,11 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
 
-        // Update the slider value
-        if (healthSlider != null)
-        {
-            healthSlider.value = currentHealth;
-        }
+        healthtext.text = currentHealth + "/5";
 
         Debug.Log(currentHealth + "/" + maxHealth);
     }
@@ -180,5 +169,14 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
         tookDamageEffect.SetActive(false);
+    }
+
+    public void Buy()
+    {
+        if(currentHealth < 5 && cointotal <= 30)
+        {
+            cointotal -= 30;
+            ChangeHealth(10);
+        }
     }
 }

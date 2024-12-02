@@ -38,8 +38,10 @@ public class EnemyNpc : MonoBehaviour
     public void TookDamage(int damage)
     {
         health -= damage;
-        if(health <= 0)
+        if (health <= 0)
         {
+            PlayerMovement playerScript = GameObject.Find("PlayerCharacter").GetComponent<PlayerMovement>();
+            playerScript.cointotal += 10;
             Destroy(gameObject);
         }
     }
